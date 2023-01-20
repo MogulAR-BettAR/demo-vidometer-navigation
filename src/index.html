@@ -10,13 +10,9 @@
 
     function onSceneLoaded() {
       const vidometer = document.getElementById('vidometry-vidometer');
-      vidometer.addTarget('https://bettar.life/navigation/', 0.178, -0.11, 0, 0)
-        .then(() => {
-          return vidometer.addTarget('1', 0.178, -0.11, 0, 10);
-        })
-        .then(() => {
-          vidometer.addTarget('2', 0.178, -0.11, 0, 2.2);
-        });
+      vidometer.addTarget('https://bettar.life/navigation/', 0.178, -0.11, 0, 0);
+      vidometer.addTarget('1', 0.178, -0.11, 0, 10);
+      vidometer.addTarget('2', 0.178, -0.11, 0, 2.2);
 
 
       const preloader = document.getElementById('preloader');
