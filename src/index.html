@@ -1,0 +1,100 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Vidometer Scene</title>
+  <script src="https://bettar.life/vidometry/vidometer.0.0.16.js"></script>
+  <script src="https://bettar.life/vidometry/vidometry-scene.0.0.15.js"></script>
+  <script>
+
+    function onSceneLoaded() {
+      const vidometer = document.getElementById('vidometry-vidometer');
+      vidometer.addTarget('https://bettar.life/navigation/', 0.178, -0.11, 0, 0)
+        .then(() => {
+          return vidometer.addTarget('1', 0.178, -0.11, 0, 10);
+        })
+        .then(() => {
+          vidometer.addTarget('2', 0.178, -0.11, 0, 2.2);
+        });
+
+
+      const preloader = document.getElementById('preloader');
+      preloader.style.display = 'none';
+
+      const hint = document.getElementById('qr-hint');
+      hint.style.display = 'block';
+    }
+
+    function onSceneStarted() {
+      const hint = document.getElementById('qr-hint');
+      hint.style.display = 'none';
+    }
+
+    function init() {
+      const scene = document.getElementById('vidometry-scene');
+      scene.onLoaded = onSceneLoaded;
+      scene.onStarted = onSceneStarted;
+    }
+
+  </script>
+</head>
+
+
+
+<body onload="init();">
+
+  <div style=" position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;" scrolling="no">
+
+    <vidometry-scene id="vidometry-scene">
+
+      <!-- add lightning -->
+      <vidometry-ambient-light color="#ffeeb1" intensity="2"></vidometry-ambient-light>
+      <vidometry-point-light color="#ffffff" intensity="3" position="10 10 10"></vidometry-point-light>
+
+      <vidometry-gltf src="./assets/navigation.glb"></vidometry-gltf>
+
+      <vidometry-vidometer id="vidometry-vidometer"></vidometry-vidometer>
+
+    </vidometry-scene>
+
+  </div>
+
+  <div id="qr-hint" style="
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    bottom: 0px;
+    z-index: 2;
+    pointer-events: none;">
+
+    <div style="
+      display: block;
+      position: absolute;
+      left: 2vw;
+      top: 28vh;
+      color: #fff;
+      font-size: 2vh;">Scan QR to start</div>
+
+    <div style="
+      display: block;
+      position: absolute;
+      left: 2vw;
+      top: 32vh;
+      width: 20vw;
+      height: 20vw;
+      background-image: url('./assets/qr.png');
+      background-repeat: no-repeat;
+      background-size: contain;"></div>
+  </div>
+
+  <div id="preloader" style="position: absolute; right: 2vh; top: 2vh; font-size: 2vh;">
+    Loading...
+  </div>
+
+
+</body>
+
+</html>
