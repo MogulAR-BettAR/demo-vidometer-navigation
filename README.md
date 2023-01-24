@@ -54,10 +54,141 @@ yarn install
     1. **src** - the source of the 3d model;
 5. **vidometry-vidometer** - vidometer element;
 
-1. Add **onload** event listener to the body element. Inside the **init** function add **onLoaded** and **onStarted** event listener to the scene element:
+ 3. Add targets to the **Vidometer**:
 
 ```jsx
 ...
+<vidometry-vidometer id="vidometry-vidometer" targets='[
+   {
+      "id":"https://bettar.life/navigation/",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":0
+   },
+   {
+      "id":"1",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":10
+   },
+   {
+      "id":"2",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":2.2
+   }
+]'></vidometry-vidometer>
+...
+```
+
+Targets should be as array of Target objects in JSON format:
+
+```jsx
+[
+	Target,
+	Target,
+	...
+	Target
+]
+```
+
+Target object format:
+
+```jsx
+{
+      "id":"https://bettar.life/navigation/",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":0
+   }
+```
+
+id - QR code data *(in text format)*;
+
+size - the size of printed QR code in meters *(in number format)*;
+
+x - X coordinate in meters *(in number format)*;
+
+y - Y coordinate in meters, height above the ground (it is recommended to set 0) *(in number format)*;
+
+z - Z coordinate in meters *(in number format)*;
+
+The f**ull source of code:**
+
+```jsx
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Vidometer Scene</title>
+  <script src="https://bettar.life/vidometry-dev/vidometer.0.0.16.js"></script>
+  <script src="https://bettar.life/vidometry-dev/vidometry-scene.0.0.15.js"></script>
+</head>
+
+<body >
+
+  <div style=" position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;" scrolling="no">
+
+    <vidometry-scene id="vidometry-scene">
+
+      <!-- add lightning -->
+      <vidometry-ambient-light color="#ffeeb1" intensity="2"></vidometry-ambient-light>
+      <vidometry-point-light color="#ffffff" intensity="3" position="10 10 10"></vidometry-point-light>
+
+      <vidometry-gltf src="./assets/navigation.glb"></vidometry-gltf>
+
+      <vidometry-vidometer id="vidometry-vidometer" targets='[
+   {
+      "id":"https://bettar.life/navigation/",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":0
+   },
+   {
+      "id":"1",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":10
+   },
+   {
+      "id":"2",
+      "size":0.178,
+      "x":-0.11,
+      "y":0,
+      "z":2.2
+   }
+]'></vidometry-vidometer>
+
+    </vidometry-scene>
+
+  </div>
+
+</body>
+
+</html>
+```
+
+## Events
+
+To add events to the scene you just need to add **onload** event listener to the body element. Inside the **init** function add **onLoaded** and **onStarted** event listeners to the scene element:
+
+```jsx
+...
+function onSceneLoaded() {
+	// Add your code here
+}
+
+function onSceneStarted() {
+	// Add your code here
+}
+
 function init() {
   const scene = document.getElementById('vidometry-scene');
   scene.onLoaded = onSceneLoaded;
@@ -69,24 +200,9 @@ function init() {
 ...
 ```
 
-1. Inside the onSceneLoaded function add all QR targets:
+**onLoaded** - thrown when the Vidometer is initialized and all resources are loaded - Vidometer is ready to work.
 
-```jsx
-function onSceneLoaded() {
-  const vidometer = document.getElementById('vidometry-vidometer');
-  vidometer.addTarget('https://bettar.life/navigation/', 0.178, -0.11, 0, 0);
-  vidometer.addTarget('1', 0.178, -0.11, 0, 10);
-  vidometer.addTarget('2', 0.178, -0.11, 0, 2.2);
-}
-```
-
-addTarget(QRtext: string, QRSize: number, x: number, y:number, z:number) :
-
-1. QRText - text of QR code data;
-2. QRSize - the size of printed QR code in meters;
-3. x - X coordinate in meters;
-4. y - Y coordinate in meters, height above the ground (it is recommended to set 0);
-5. z - Z coordinate in meters;
+**onStarted** - thrown when the QR code is detected the first time. The scene gets visible.
 
 **QRSize:**
 
@@ -96,7 +212,7 @@ addTarget(QRtext: string, QRSize: number, x: number, y:number, z:number) :
 
 ![https://bettar.life/navigation/assets/coord.png](https://bettar.life/navigation/assets/coord.png)
 
-**Full source of code:**
+The f**ull source of code:**
 
 ```jsx
 <html lang="en">
