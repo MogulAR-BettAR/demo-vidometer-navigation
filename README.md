@@ -56,6 +56,8 @@ yarn install
 
  3. Add targets to the **Vidometer**:
 
+***a: add targets as a JSON object to the targets attribute of Vidometer:***
+
 ```jsx
 ...
 <vidometry-vidometer id="vidometry-vidometer" targets='[
@@ -84,7 +86,7 @@ yarn install
 ...
 ```
 
-Targets should be as array of Target objects in JSON format:
+Targets should be as an array of Target objects in JSON format:
 
 ```jsx
 [
@@ -113,7 +115,37 @@ size - the size of printed QR code in meters *(in number format)*;
 
 x - X coordinate in meters *(in number format)*;
 
-y - Y coordinate in meters, height above the ground (it is recommended to set 0) *(in number format)*;
+y - rotation in degrees (clockwise) around vertical relative to the upper left corner of the QR code *(in number format)*;
+
+z - Z coordinate in meters *(in number format)*;
+
+***b. add targets programmatically:***
+
+Add **onload** event listener to the body element, inside this listener create an empty array and add each target like a new element of this array:
+
+```jsx
+...
+function init() {
+  let targets = [];
+  targets.push({ id: 'https://bettar.life/navigation/', size: 0.178, x: -0.11, z: 0, y: 0 });
+  targets.push({ id: '1', size: 0.178, x: -0.11, z: 10, y: 0 });
+  targets.push({ id: '2', size: 0.178, x: -0.11, z: 2.2, y: 0 });
+
+  const vidometer = document.getElementById('vidometry-vidometer');
+  vidometer.targets = targets;
+}
+...
+<body onload="init();">
+...
+```
+
+id - QR code data *(in text format)*;
+
+size - the size of printed QR code in meters *(in number format)*;
+
+x - X coordinate in meters *(in number format)*;
+
+y - rotation in degrees (clockwise) around vertical relative to the upper left corner of the QR code *(in number format)*;
 
 z - Z coordinate in meters *(in number format)*;
 
