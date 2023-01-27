@@ -115,7 +115,7 @@ size - the size of printed QR code in meters *(in number format)*;
 
 x - X coordinate in meters *(in number format)*;
 
-y - rotation in degrees (clockwise) around vertical relative to the upper left corner of the QR code *(in number format)*;
+y - rotation in degrees (clockwise) around vertical relative to the center of the QR code *(in number format)*;
 
 z - Z coordinate in meters *(in number format)*;
 
@@ -145,7 +145,7 @@ size - the size of printed QR code in meters *(in number format)*;
 
 x - X coordinate in meters *(in number format)*;
 
-y - rotation in degrees (clockwise) around vertical relative to the upper left corner of the QR code *(in number format)*;
+y - rotation in degrees (clockwise) around vertical relative to the center of the QR code *(in number format)*;
 
 z - Z coordinate in meters *(in number format)*;
 
