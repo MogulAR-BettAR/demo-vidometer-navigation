@@ -3,12 +3,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demo Vidometer Scene</title>
+  <title>Demo Vidometer Navigation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"
+    integrity="sha512-NLtnLBS9Q2w7GKK9rKxdtgL7rA7CAS85uC/0xd9im4J/yOL4F9ZVlv634NAM7run8hz3wI2GabaA6vv8vJtHiQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://bettar.life/vidometry-dev/vidometer.0.0.16.js"></script>
-  <script src="https://bettar.life/vidometry-dev/vidometry-scene.0.0.15.js"></script>
   <script>
 
-    function onSceneLoaded() {
+    class Scene3D {
+      constructor(width, height, fov, canvas) {
+        this.fov = fov;
+        this.width = width;
+        this.height = height;
+
+        // 1. renderer
+        this.renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+        });
+        this.renderer.setSize(width, height);
+
+        // 2. scene
+        this.scene = new THREE.Scene();
+
+        // 3. camera
+        const aspect = width / height;
+        this.camera = new THREE.PerspectiveCamera(fov, aspect, 0.01, 10000);
+        this.camera.filmGauge = Math.max(width, height);
+        this.camera.updateProjectionMatrix();
+        this.scene.add(this.camera);
+
+        // 4. container
+        this.container = new THREE.Object3D();
+        this.container.frustumCulled = false;
+        this.container.matrixAutoUpdate = false;
+        this.scene.add(this.container);
+      }
+
+      updateFocal(focal) {
+        if (this.focal !== focal) {
+          this.focal = focal;
+          this.camera.setFocalLength(focal);
+          this.camera.updateProjectionMatrix();
+        }
+      }
+
+      show() {
+        this.container.visible = true;
+      }
+
+      hide() {
+        this.container.visible = false;
+      }
+
+      addLight(light) {
+        this.scene.add(light);
+      }
+
+      add(object) {
+        this.container.add(object);
+      }
+
+      updateObjectMatrix(roto) {
+        const matrix = new THREE.Matrix4();
+        matrix.set(
+          roto[0], roto[1], roto[2], roto[3],
+          roto[4], roto[5], roto[6], roto[7],
+          roto[8], roto[9], roto[10], roto[11],
+          roto[12], roto[13], roto[14], roto[15],
+        );
+
+        matrix.decompose(this.container.position, this.container.quaternion, this.container.scale);
+        this.container.updateMatrix();
+      }
+
+      render(roto) {
+        const matrix = new THREE.Matrix4();
+        matrix.set(
+          roto[0], roto[1], roto[2], roto[3],
+          roto[4], roto[5], roto[6], roto[7],
+          roto[8], roto[9], roto[10], roto[11],
+          roto[12], roto[13], roto[14], roto[15],
+        );
+
+        matrix.decompose(this.camera.position, this.camera.quaternion, this.camera.scale);
+        this.renderer.render(this.scene, this.camera);
+      }
+
+    };
+
+
+    var scene, vidometer;
+    let targets = [];
+
+    function onVidometerReady() {
       const preloader = document.getElementById('preloader');
       preloader.style.display = 'none';
 
@@ -16,23 +105,94 @@
       hint.style.display = 'block';
     }
 
-    function onSceneStarted() {
+    function onVidometerStarted() {
+      const preloader = document.getElementById('preloader');
+      preloader.style.display = 'none';
+
       const hint = document.getElementById('qr-hint');
       hint.style.display = 'none';
     }
 
+    const onVidometerProcess = (T, To, focal) => {
+      scene.updateFocal(focal);
+      scene.updateObjectMatrix(To);
+      scene.render(T);
+    }
+
+    function onVidometerTargetDetected(targetId) {
+      const target = targets[targetId].id;
+      console.log("detected target: " + target);
+    }
+
     function init() {
-      let targets = [];
-      targets.push({ id: 'https://bettar.life/navigation/', size: 0.178, x: -0.11, z: 0, y: 0 });
-      targets.push({ id: '1', size: 0.178, x: -0.11, z: 10, y: 0 });
-      targets.push({ id: '2', size: 0.178, x: -0.11, z: 2.2, y: 0 });
+      const fov = 65;
+      initVidometer(fov);
+      initScene(fov);
+    }
 
-      const vidometer = document.getElementById('vidometry-vidometer');
+    function initVidometer(fov) {
+      const canvas = document.getElementById('canvas-video');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const vidometer = document.getElementById('vidometer');
+      // ADD EVENT LISTENERS
+      // triggered when the Vidometer is ready to work
+      vidometer.onReady = onVidometerReady;
+      // triggered when the Vidometer detects for the QR code the first time
+      vidometer.onStarted = onVidometerStarted;
+      // triggered in each frame
+      vidometer.onProcess = onVidometerProcess;
+      // triggered whenever a QR code is detected
+      vidometer.onTargetDetected = onVidometerTargetDetected;
+
+      // INITIALIZE VIDOMETER
+      vidometer.initialize(window.innerWidth, window.innerHeight, fov, canvas);
+
+      // ADD QR CODE TARGETS
+      // id - hardcoded text into the QR;
+      // size - size of printed QR code (width and height should be same);
+      // x - x position, in meters;
+      // z - z position, in meters;
+      // y - rotation relative to the vertical in degrees, clockwise;
+      // print this target: https://bettar.life/navigation/marker_url.pdf
+      targets.push({ id: 'https://bettar.life/navigation/', size: 0.178, x: 0, z: 0, y: 0 });
+      // print this target: https://bettar.life/navigation/1.pdf
+      targets.push({ id: '1', size: 0.178, x: 0, z: 1, y: 90 });
+
       vidometer.targets = targets;
+    }
 
-      const scene = document.getElementById('vidometry-scene');
-      scene.onLoaded = onSceneLoaded;
-      scene.onStarted = onSceneStarted;
+    function initScene(fov) {
+      // MAIN SCENE
+      const canvas = document.getElementById('canvas-gl');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      scene = new Scene3D(window.innerWidth, window.innerHeight, fov, canvas);
+
+      const boxSize = 0.178;
+
+      // ADD CUBE OBJECTS
+      const cube1 = new THREE.Mesh(new THREE.BoxGeometry(boxSize, boxSize, boxSize), new THREE.MeshNormalMaterial());
+      // to centralize cube move it by half of width and half of height
+      cube1.position.setX(0);
+      cube1.position.setZ(0);
+
+      cube1.position.setY(boxSize / 2);
+
+      cube1.frustumCulled = false;
+      scene.add(cube1);
+
+      const cube2 = new THREE.Mesh(new THREE.BoxGeometry(boxSize, boxSize, boxSize), new THREE.MeshNormalMaterial());
+      // to centralize cube move it by half of width and half of height
+      // + move it to the position of second marker x = 0m, z = 1m
+      cube2.position.setX(0.0);
+      cube2.position.setZ(1.0);
+
+      cube2.position.setY(boxSize / 2);
+
+      cube2.frustumCulled = false;
+      scene.add(cube2);
     }
 
   </script>
@@ -43,19 +203,10 @@
 <body onload="init();">
 
   <div style=" position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;" scrolling="no">
-
-    <vidometry-scene id="vidometry-scene">
-
-      <!-- add lightning -->
-      <vidometry-ambient-light color="#ffeeb1" intensity="2"></vidometry-ambient-light>
-      <vidometry-point-light color="#ffffff" intensity="3" position="10 10 10"></vidometry-point-light>
-
-      <vidometry-gltf src="./assets/navigation.glb"></vidometry-gltf>
-
-      <vidometry-vidometer id="vidometry-vidometer"></vidometry-vidometer>
-
-    </vidometry-scene>
-
+    <vidometry-vidometer id="vidometer"></vidometry-vidometer>
+    <canvas id="canvas-video" style="position: absolute;"></canvas>
+    <canvas id="canvas-gl" style="position: absolute; left: 0; top: 0; width: 100vw; height: 100vh;" width="100vw"
+      height="100vh"></canvas>
   </div>
 
   <div id="qr-hint" style="
