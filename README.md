@@ -2,7 +2,7 @@
 
 This example project shows how to integrate a **vidometer** together with ThreeJS.
 
-You can check [live example](https://bettar.life/navigation/).
+You can check [live example](https://bettar.life/vidometer-navigation/).
 
 ### Installation
 
