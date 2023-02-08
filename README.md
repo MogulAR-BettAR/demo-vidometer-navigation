@@ -258,7 +258,7 @@ function init() {
 
 # Demo
 
-You can test the [demo](https://bettar.life/navigation/) by URL:  [https://bettar.life/navigation/](https://bettar.life/_navigation/)
+You can test the [demo](https://bettar.life/navigation/) by URL:  [https://bettar.life/navigation/](https://bettar.life/navigation/)
 
 ### Print markers on A4 paper format
 
@@ -272,7 +272,7 @@ Place markers **marker_url** and **marker_1** randomly.
 
 *Optionally:* place marker **marker_2** at a distance of 2.2m from the marker **marker_url** (refinement tracking).
 
-![https://bettar.life/navigation/assets/design.png](https://bettar.life/navigation/assets/design.png)
+![https://bettar.life/navigation/assets/_design.png](https://bettar.life/navigation/assets/_design.png)
 
 ### Scan and open application
 
