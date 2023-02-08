@@ -1,6 +1,6 @@
-# vidometer-navigation
+# vidometer-scene-navigation
 
-This example project shows how to integrate **vidometer** into your web navigation application.
+This example project shows how to integrate **vidometer** and **vidometry-scene** into your web navigation application.
 
 You can check [live example](https://bettar.life/navigation/).
 
@@ -56,6 +56,8 @@ yarn install
 
  3. Add targets to the **Vidometer**:
 
+***a: add targets as a JSON object to the targets attribute of Vidometer:***
+
 ```jsx
 ...
 <vidometry-vidometer id="vidometry-vidometer" targets='[
@@ -84,7 +86,7 @@ yarn install
 ...
 ```
 
-Targets should be as array of Target objects in JSON format:
+Targets should be as an array of Target objects in JSON format:
 
 ```jsx
 [
@@ -107,13 +109,43 @@ Target object format:
    }
 ```
 
-id - QR code data *(in text format)*;
+id - hardcoded text of QR code*(in text format) (you can use this [link](https://goqr.me/) to generate QR code)*;
 
 size - the size of printed QR code in meters *(in number format)*;
 
 x - X coordinate in meters *(in number format)*;
 
-y - Y coordinate in meters, height above the ground (it is recommended to set 0) *(in number format)*;
+y - rotation in degrees (clockwise) around vertical relative to the center of the QR code *(in number format)*;
+
+z - Z coordinate in meters *(in number format)*;
+
+***b. add targets programmatically:***
+
+Add **onload** event listener to the body element, inside this listener create an empty array and add each target like a new element of this array:
+
+```jsx
+...
+function init() {
+  let targets = [];
+  targets.push({ id: 'https://bettar.life/navigation/', size: 0.178, x: -0.11, z: 0, y: 0 });
+  targets.push({ id: '1', size: 0.178, x: -0.11, z: 10, y: 0 });
+  targets.push({ id: '2', size: 0.178, x: -0.11, z: 2.0, y: 0 });
+
+  const vidometer = document.getElementById('vidometry-vidometer');
+  vidometer.targets = targets;
+}
+...
+<body onload="init();">
+...
+```
+
+id - hardcoded text of QR code*(in text format) (you can use this [link](https://goqr.me/) to generate QR code)*;
+
+size - the size of printed QR code in meters *(in number format)*;
+
+x - X coordinate in meters *(in number format)*;
+
+y - rotation in degrees (clockwise) around vertical relative to the center of the QR code *(in number format)*;
 
 z - Z coordinate in meters *(in number format)*;
 
@@ -162,7 +194,7 @@ The f**ull source of code:**
       "size":0.178,
       "x":-0.11,
       "y":0,
-      "z":2.2
+      "z":2.0
    }
 ]'></vidometry-vidometer>
 
@@ -200,17 +232,29 @@ function init() {
 ...
 ```
 
-**onLoaded** - thrown when the Vidometer is initialized and all resources are loaded - Vidometer is ready to work.
+**onLoaded** - triggered when the Vidometer is initialized and all resources are loaded - Vidometer is ready to work.
 
-**onStarted** - thrown when the QR code is detected the first time. The scene gets visible.
+**onStarted** - triggered when the Vidometer detects a QR code for the first time. The scene gets visible.
 
 **QRSize:**
 
 ![https://bettar.life/navigation/assets/qr-size.png](https://bettar.life/navigation/assets/qr-size.png)
 
-**QR coordinates:**
+**Marker direction:**
+
+![https://bettar.life/navigation/assets/marker.png](https://bettar.life/navigation/assets/marker.png)
+
+**Coordinate system:**
 
 ![https://bettar.life/navigation/assets/coord.png](https://bettar.life/navigation/assets/coord.png)
+
+**QR coordinates:**
+
+![https://bettar.life/navigation/assets/coord-markers.png](https://bettar.life/navigation/assets/coord-markers.png)
+
+**marker1** - locates at the position x = 0, z =0 (relative to the center of the QR marker). Marker rotation is 0 (y value in Target config is 0), so the Z coordinate is the same as the direction of the marker.  When the marker would be detected the camera position will calculate relative to this position.
+
+**marker2** - locates at the position x = 0, z = 2.2m. Marker is rotated to -90 (y value in Target config is -90) degrees around the vertical, so Z coordinate would be rotated to 90 degrees (clockwise) relative to the QR marker direction. When the marker would be detected the camera position will calculate relative to this position.
 
 # Demo
 
@@ -218,9 +262,9 @@ You can test the [demo](https://bettar.life/navigation/) by URL:  [https://betta
 
 ### Print markers on A4 paper format
 
-1. Print [***marker_url***](https://bettar.life/navigation/marker_url.pdf) [https://bettar.life/navigation/marker_url.pdf](https://bettar.life/navigation/marker_url.pdf)
-2. Print [***marker_1***](https://bettar.life/navigation/marker_1.pdf) [https://bettar.life/navigation/marker_1.pdf](https://bettar.life/navigation/marker_1.pdf)
-3. (optional) Print [***marker_2***](https://bettar.life/navigation/marker_2.pdf) [https://bettar.life/navigation/marker_2.pdf](https://bettar.life/navigation/marker_1.pdf)
+1. Print ***[marker_url](https://bettar.life/navigation/assets/marker_url.pdf)*** [https://bettar.life/navigation/assets/marker_url.pdf](https://bettar.life/navigation/assets/marker_url.pdf)
+2. Print ***[marker_1](https://bettar.life/navigation/assets/marker_1.pdf)*** [https://bettar.life/navigation/assets/marker_1.pdf](https://bettar.life/navigation/marker_1.pdf)
+3. (optional) Print ***[marker_2](https://bettar.life/navigation/assets/marker_1.pdf)*** [https://bettar.life/navigation/assets/marker_1.pdf](https://bettar.life/navigation/marker_1.pdf)
 
 ### Place marker on the floor
 
@@ -244,7 +288,7 @@ Scan **marker_url** or **marker_1**
 
 ### Move according to the navigation
 
-*Optionally:* If you moving according to **marker_url** you can refine your position according to **marker_2** 
+*Optionally:* If you are moving according to **marker_url** you can refine your position according to **marker_2** 
 
 # Files
 
