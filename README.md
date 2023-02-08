@@ -258,7 +258,7 @@ function init() {
 
 # Demo
 
-You can test the [demo](https://bettar.life/navigation/) by URL:  [https://bettar.life/navigation/](https://bettar.life/navigation/)
+You can test the [demo](https://bettar.life/navigation/) by URL:  [https://bettar.life/navigation/](https://bettar.life/_navigation/)
 
 ### Print markers on A4 paper format
 
