@@ -272,7 +272,7 @@ Place markers **marker_url** and **marker_1** randomly.
 
 *Optionally:* place marker **marker_2** at a distance of 2.2m from the marker **marker_url** (refinement tracking).
 
-![https://bettar.life/navigation/assets/_design.png](https://bettar.life/navigation/assets/_design.png)
+![https://bettar.life/navigation/assets/design.png](https://bettar.life/navigation/assets/design.png)
 
 ### Scan and open application
 
