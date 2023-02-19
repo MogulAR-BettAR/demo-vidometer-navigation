@@ -155,10 +155,10 @@
       // x - x position, in meters;
       // z - z position, in meters;
       // y - rotation relative to the vertical in degrees, clockwise;
-      // print this target: https://bettar.life/navigation/marker_url.pdf
-      targets.push({ id: 'https://bettar.life/navigation/', size: 0.178, x: 0, z: 0, y: 0 });
-      // print this target: https://bettar.life/navigation/marker_1.pdf
-      targets.push({ id: '1', size: 0.178, x: 0, z: 1, y: 90 });
+      // print this target: https://bettar.life/navigation/assets/marker_url.pdf
+      targets.push({ id: 'https://bettar.life/navigation/', size: 0.177, x: 0, z: 0, y: 0 });
+      // print this target: https://bettar.life/navigation/assets/marker_1.pdf
+      targets.push({ id: '1', size: 0.177, x: 0, z: 1, y: 90 });
 
       vidometer.targets = targets;
     }
@@ -170,7 +170,7 @@
       canvas.height = window.innerHeight;
       scene = new Scene3D(window.innerWidth, window.innerHeight, fov, canvas);
 
-      const boxSize = 0.178;
+      const boxSize = 0.177;
 
       // ADD CUBE OBJECTS
       const cube1 = new THREE.Mesh(new THREE.BoxGeometry(boxSize, boxSize, boxSize), new THREE.MeshNormalMaterial());
