@@ -416,9 +416,9 @@ You can test the [demo](https://bettar.life/navigation/) by URL:  [https://betta
 
 ### Print markers on A4 paper format
 
-1. Print ***[marker_url](https://bettar.life/navigation/assets/marker_url.pdf)*** [https://bettar.life/navigation/assets/marker_url.pdf](https://bettar.life/navigation/marker_url.pdf)
-2. Print ***[marker_1](https://bettar.life/navigation/assets/marker_1.pdf)*** [https://bettar.life/navigation/assets/marker_1.pdf](https://bettar.life/navigation/marker_1.pdf)
-3. (optional) Print ***[marker_2](https://bettar.life/navigation/assets/marker_2.pdf)*** [https://bettar.life/navigation/assets/marker_2.pdf](https://bettar.life/navigation/marker_1.pdf)
+1. Print ***[marker_url](https://bettar.life/navigation/assets/marker_url.pdf)*** [https://bettar.life/navigation/assets/marker_url.pdf](https://bettar.life/navigation/assets/marker_url.pdf)
+2. Print ***[marker_1](https://bettar.life/navigation/assets/marker_1.pdf)*** [https://bettar.life/navigation/assets/marker_1.pdf](https://bettar.life/navigation/assets/marker_1.pdf)
+3. (optional) Print ***[marker_2](https://bettar.life/navigation/assets/marker_2.pdf)*** [https://bettar.life/navigation/assets/marker_2.pdf](https://bettar.life/navigation/assets/marker_1.pdf)
 
 ### Place marker on the floor
 
