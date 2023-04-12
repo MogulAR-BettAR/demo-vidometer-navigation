@@ -8,12 +8,22 @@
   <script src="https://bettar.life/vidometry/vidometry-scene.0.0.15.js"></script>
   <script>
 
+    const onRestartClick = () => {
+      const vidometer = document.getElementById('vidometry-vidometer');
+      vidometer.restart();
+    }
+
     function onSceneLoaded() {
       const preloader = document.getElementById('preloader');
       preloader.style.display = 'none';
 
       const hint = document.getElementById('qr-hint');
       hint.style.display = 'block';
+
+
+      const restart = document.getElementById('restart');
+      restart.style.display = 'block';
+      restart.onclick = onRestartClick;
     }
 
     function onSceneStarted() {
@@ -100,6 +110,15 @@
       background-image: url('./assets/qr.png');
       background-repeat: no-repeat;
       background-size: contain;"></div>
+  </div>
+
+  <div id="restart" style="display: none; position: absolute; right: 2vh; top: 8vh; 
+      font-size: 2vh; 
+      background-color: #ccc; 
+      border-style: solid; 
+      border-color: black; 
+      border-radius: 5px;">
+    Restart
   </div>
 
   <div id="preloader" style="position: absolute; right: 2vh; top: 2vh; font-size: 2vh;">
