@@ -97,12 +97,21 @@
     var scene, vidometer;
     let targets = [];
 
+    function onRestartClick() {
+      vidometer = document.getElementById('vidometer');
+      vidometer.restart();
+    }
+
     function onVidometerReady() {
       const preloader = document.getElementById('preloader');
       preloader.style.display = 'none';
 
       const hint = document.getElementById('qr-hint');
       hint.style.display = 'block';
+
+      const restart = document.getElementById('restart');
+      restart.style.display = 'block';
+      restart.onclick = onRestartClick;
     }
 
     function onVidometerStarted() {
@@ -237,6 +246,23 @@
       background-image: url('./assets/qr.png');
       background-repeat: no-repeat;
       background-size: contain;"></div>
+  </div>
+
+  <div id="restart" style="
+        display: none; 
+        position: absolute; 
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        right: 2vh; 
+        top: 2vh; 
+        font-size: 2vh; 
+        background-color: #ccc; 
+        border-style: solid; 
+        border-color: black; 
+        border-radius: 20px;">
+    Restart
   </div>
 
   <div id="preloader" style="position: absolute; right: 2vh; top: 2vh; font-size: 2vh;">

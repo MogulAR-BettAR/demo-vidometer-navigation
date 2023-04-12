@@ -120,6 +120,10 @@ vidometer.targets = targets;
 
 *canvas* - a reference to the canvas where Vidometer will render video;
 
+## Restarting
+
+**restart()** - Vidometer restarting method;
+
 ## Target
 
 Target is a JSON object of the following format:
@@ -240,6 +244,11 @@ The f**ull source of code:**
 
     var scene, vidometer;
     let targets = [];
+
+    function restart() {
+      const vidometer = document.getElementById('vidometer');
+      vidomter.restart();
+    }
 
     function onVidometerReady() {
       const preloader = document.getElementById('preloader');
